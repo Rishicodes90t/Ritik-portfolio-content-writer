@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ritik Kumar — Content Writer &amp; AI-Humanization Specialist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf8f0;
+    --cream2: #f9f1e2;
+    --parchment: #f2e8d0;
+    --ink: #1a1409;
+    --ink2: #2d2416;
+    --sepia: #5c4a2a;
+    --sepia2: #7a6035;
+    --sepia3: #9e8050;
+    --gold: #c8922a;
+    --gold2: #e0aa45;
+    --dusty-rose: #c4877a;
+    --sage: #7a9a7e;
+    --rust: #a84c38;
+    --border: rgba(92,74,42,0.2);
+    --border2: rgba(92,74,42,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'EB Garamond', serif;
+    overflow-x: hidden;
+  }
+
+  /* ── CURSOR ── */
+  body { cursor: none; }
+  #cursor {
+    position: fixed; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--gold);
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, opacity 0.3s;
+    mix-blend-mode: multiply;
+  }
+  #cursor-ring {
+    position: fixed; width: 32px; height: 32px;
+    border-radius: 50%; border: 1px solid var(--gold);
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    opacity: 0.6;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+    background: rgba(253,248,240,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border2);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px rgba(92,74,42,0.08); }
+
+  .nav-logo {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem; color: var(--sepia);
+    text-decoration: none; letter-spacing: 0.01em;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo svg { width: 22px; height: 22px; }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--sepia);
+    text-decoration: none; position: relative;
+    transition: color 0.2s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -3px; left: 0;
+    width: 0; height: 1px; background: var(--gold);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.6rem;
+    border: 1px solid var(--gold);
+    color: var(--gold); background: transparent;
+    text-decoration: none; cursor: none;
+    transition: all 0.3s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--cream); }
+
+  /* ── PAGE SYSTEM ── */
+  .page { display: none; min-height: 100vh; padding-top: 72px; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; padding: 0 4rem;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(8rem, 18vw, 22rem);
+    color: rgba(200,146,42,0.045);
+    white-space: nowrap; pointer-events: none;
+    letter-spacing: -0.02em; font-style: italic;
+    user-select: none;
+  }
+
+  .hero-quill {
+    position: absolute; right: 6%; top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.12;
+    animation: quillFloat 6s ease-in-out infinite;
+  }
+  @keyframes quillFloat {
+    0%,100% { transform: translateY(-50%) rotate(-8deg); }
+    50% { transform: translateY(-54%) rotate(-5deg); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 7vw, 7rem);
+    line-height: 1.05; color: var(--ink);
+    max-width: 760px;
+    animation: fadeUp 0.8s 0.12s ease both;
+  }
+  .hero-title em {
+    font-style: italic; color: var(--sepia);
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; font-weight: 300;
+    line-height: 1.7; color: var(--sepia2);
+    max-width: 520px; margin-top: 1.8rem;
+    animation: fadeUp 0.8s 0.24s ease both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1.5rem; margin-top: 3rem;
+    animation: fadeUp 0.8s 0.36s ease both;
+  }
+
+  .btn-primary {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 1rem 2.8rem;
+    background: var(--ink); color: var(--cream);
+    text-decoration: none; cursor: none;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold); transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(0.76,0,0.24,1);
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .btn-outline {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 1rem 2.8rem;
+    border: 1px solid var(--border);
+    color: var(--sepia); background: transparent;
+    text-decoration: none; cursor: none;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--sepia); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 5rem;
+    animation: fadeUp 0.8s 0.48s ease both;
+  }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; color: var(--ink); line-height: 1;
+  }
+  .hero-stat-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--sepia3);
+    margin-top: 0.3rem;
+  }
+  .hero-stat-divider {
+    width: 1px; background: var(--border);
+    height: 3rem; align-self: center;
+  }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    display: flex; align-items: center;
+    gap: 1.2rem; padding: 0 4rem; margin: 0.5rem 0;
+    opacity: 0.5;
+  }
+  .section-divider::before, .section-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .section-divider span {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem; color: var(--gold);
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-eyebrow {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.15; color: var(--ink);
+  }
+  .section-title em { font-style: italic; color: var(--sepia); }
+  .section-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 300;
+    line-height: 1.75; color: var(--sepia2);
+    max-width: 560px;
+  }
+
+  /* ── SERVICES PAGE ── */
+  #services-page {
+    padding: 72px 4rem 6rem;
+  }
+  .services-header {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 4rem;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2px;
+  }
+  .service-card {
+    padding: 3rem 2.5rem;
+    border: 1px solid var(--border2);
+    background: var(--cream);
+    position: relative; overflow: hidden;
+    transition: all 0.4s;
+    cursor: none;
+  }
+  .service-card::before {
+    content: ''; position: absolute;
+    inset: 0; background: var(--parchment);
+    transform: scaleY(0); transform-origin: bottom;
+    transition: transform 0.5s cubic-bezier(0.76,0,0.24,1);
+    z-index: 0;
+  }
+  .service-card:hover::before { transform: scaleY(1); }
+  .service-card > * { position: relative; z-index: 1; }
+  .service-card-icon {
+    font-size: 2.2rem; margin-bottom: 1.5rem; display: block;
+    transition: transform 0.4s;
+  }
+  .service-card:hover .service-card-icon { transform: rotate(-8deg) scale(1.1); }
+  .service-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--ink); margin-bottom: 0.8rem;
+  }
+  .service-card-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 300;
+    color: var(--sepia2); line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .service-card-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .tag {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    color: var(--sepia3);
+  }
+  .service-card-link {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold);
+    text-decoration: none; cursor: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: gap 0.3s;
+  }
+  .service-card-link:hover { gap: 0.9rem; }
+  .service-card-link::after { content: '→'; }
+
+  /* ── PRICING PAGE ── */
+  #pricing-page {
+    padding: 72px 4rem 6rem;
+  }
+  .pricing-header { padding: 5rem 0 4rem; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 0; border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+  .pricing-card {
+    padding: 3.5rem 2.8rem;
+    border-right: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .pricing-card:last-child { border-right: none; }
+  .pricing-card.featured {
+    background: var(--ink);
+  }
+  .pricing-card.featured * { color: var(--cream) !important; }
+  .pricing-card.featured .tag {
+    border-color: rgba(253,248,240,0.25) !important;
+    color: rgba(253,248,240,0.6) !important;
+  }
+  .pricing-card.featured .price-amount { color: var(--gold2) !important; }
+  .pricing-card.featured .btn-outline {
+    border-color: var(--gold) !important; color: var(--gold) !important;
+  }
+  .pricing-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  .pricing-plan {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem; line-height: 1;
+    color: var(--ink); margin: 1.5rem 0 0.3rem;
+  }
+  .price-sub {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.72rem; color: var(--sepia3);
+    letter-spacing: 0.08em; margin-bottom: 2rem;
+  }
+  .pricing-features {
+    list-style: none; margin-bottom: 2.5rem;
+  }
+  .pricing-features li {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; color: var(--sepia2);
+    padding: 0.6rem 0; border-bottom: 1px solid var(--border2);
+    display: flex; align-items: start; gap: 0.6rem;
+  }
+  .pricing-features li::before {
+    content: '✦'; color: var(--gold); font-size: 0.6rem;
+    margin-top: 0.35rem; flex-shrink: 0;
+  }
+
+  /* ── PORTFOLIO PAGE ── */
+  #portfolio-page {
+    padding: 72px 4rem 6rem;
+  }
+  .portfolio-header { padding: 5rem 0 4rem; }
+  .portfolio-filters {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+  .filter-btn {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.4rem;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--sepia);
+    cursor: none; transition: all 0.25s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--ink); color: var(--cream); border-color: var(--ink);
+  }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2px;
+  }
+  .portfolio-item {
+    border: 1px solid var(--border2); padding: 3rem 2.5rem;
+    background: var(--cream); position: relative;
+    cursor: none; overflow: hidden;
+    transition: all 0.4s;
+  }
+  .portfolio-item-link { display: block; text-align: left; width: 100%; background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: none; }
+  .portfolio-open-hint {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: 'Lato', sans-serif; font-size: 0.65rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-top: 0.6rem; opacity: 0;
+    transform: translateX(-4px); transition: all 0.3s;
+  }
+  .portfolio-item:hover .portfolio-open-hint { opacity: 1; transform: translateX(0); }
+  .portfolio-item::after {
+    content: ''; position: absolute;
+    top: 0; left: 0; width: 3px; height: 0;
+    background: var(--gold);
+    transition: height 0.4s cubic-bezier(0.76,0,0.24,1);
+  }
+  .portfolio-item:hover::after { height: 100%; }
+  .portfolio-item:hover { background: var(--cream2); }
+  .portfolio-category {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .portfolio-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; color: var(--ink);
+    margin-bottom: 0.8rem; line-height: 1.3;
+  }
+  .portfolio-excerpt {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 300;
+    color: var(--sepia2); line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+  .portfolio-meta {
+    display: flex; justify-content: space-between;
+    align-items: center;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--sepia3);
+  }
+
+  /* ── ADD PROJECT FORM ── */
+  .add-project-btn {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: 1px dashed var(--gold);
+    color: var(--gold); background: transparent;
+    cursor: none; transition: all 0.3s;
+    margin-bottom: 2.5rem;
+  }
+  .add-project-btn:hover { background: rgba(200,146,42,0.06); }
+
+  .add-project-modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,20,9,0.6);
+    z-index: 200; align-items: center;
+    justify-content: center; padding: 2rem;
+  }
+  .add-project-modal.open { display: flex; }
+  .modal-box {
+    background: var(--cream); max-width: 640px;
+    width: 100%; padding: 3.5rem;
+    max-height: 90vh; overflow-y: auto;
+    animation: fadeUp 0.4s ease;
+  }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; color: var(--ink); margin-bottom: 2rem;
+  }
+  .form-row { margin-bottom: 1.5rem; }
+  .form-label {
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--sepia);
+    margin-bottom: 0.5rem;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; padding: 0.85rem 1rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; color: var(--ink);
+    outline: none; transition: border-color 0.2s;
+    appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-textarea { min-height: 100px; resize: vertical; }
+  .modal-actions {
+    display: flex; gap: 1rem; margin-top: 2rem;
+  }
+  .close-modal {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--sepia);
+    background: none; border: none; cursor: none;
+    padding: 0.9rem 0; transition: color 0.2s;
+  }
+  .close-modal:hover { color: var(--ink); }
+
+  /* ── PROJECT DETAIL MODAL ── */
+  .project-detail-category {
+    font-family: 'Lato', sans-serif; font-size: 0.68rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.8rem;
+  }
+  .project-detail-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem; color: var(--ink);
+    line-height: 1.25; margin-bottom: 1rem;
+  }
+  .project-detail-meta {
+    display: flex; gap: 1.8rem; flex-wrap: wrap;
+    font-family: 'Lato', sans-serif; font-size: 0.68rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--sepia3); margin-bottom: 1.8rem;
+    padding-bottom: 1.8rem; border-bottom: 1px solid var(--border);
+  }
+  .project-detail-meta span b { color: var(--sepia); font-weight: 600; display: block; margin-bottom: 0.2rem; font-size: 0.6rem; }
+  .project-detail-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 300; line-height: 1.75;
+    color: var(--sepia2); margin-bottom: 1.6rem;
+  }
+  .project-detail-result {
+    background: var(--parchment); padding: 1rem 1.2rem;
+    border-left: 2px solid var(--gold); margin-bottom: 1.6rem;
+  }
+  .project-detail-result span { font-family: 'Lato',sans-serif; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 0.3rem; }
+  .project-detail-result p { font-family: 'Cormorant Garamond',serif; font-size: 1.05rem; color: var(--sepia); }
+  .project-detail-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+  /* ── CLIENT / CHANNEL WALL ── */
+  .client-wall {
+    display: flex; flex-wrap: wrap; gap: 0.9rem;
+    margin-top: 1.8rem;
+  }
+  .client-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem; color: var(--sepia);
+    border: 1px solid var(--border2);
+    padding: 0.6rem 1.2rem;
+    background: var(--parchment);
+    letter-spacing: 0.01em;
+  }
+  .client-wall-note {
+    font-family: 'Lato', sans-serif; font-size: 0.75rem;
+    color: var(--sepia3); margin-top: 1rem; line-height: 1.6;
+  }
+
+  /* ── ABOUT PAGE ── */
+  #about-page {
+    padding: 72px 4rem 6rem;
+  }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; padding: 5rem 0;
+    align-items: start;
+  }
+  .about-portrait {
+    position: relative;
+  }
+  .portrait-frame {
+    width: 100%; aspect-ratio: 3/4;
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center;
+    justify-content: center;
+  }
+  .portrait-ornament {
+    position: absolute; inset: 1.5rem;
+    border: 1px solid rgba(200,146,42,0.3);
+    pointer-events: none;
+  }
+  .portrait-initials {
+    font-family: 'Dancing Script', cursive;
+    font-size: 8rem; color: rgba(92,74,42,0.12);
+    user-select: none;
+  }
+  .portrait-caption {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem; color: var(--sepia3);
+    text-align: center; margin-top: 1rem;
+  }
+  .about-text { padding-top: 2rem; }
+  .about-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-style: italic;
+    color: var(--sepia); line-height: 1.5;
+    border-left: 2px solid var(--gold);
+    padding-left: 1.5rem; margin: 2.5rem 0;
+  }
+  .about-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 300;
+    line-height: 1.85; color: var(--sepia2);
+  }
+  .skills-list {
+    display: flex; flex-wrap: wrap; gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .skill-chip {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    color: var(--sepia);
+  }
+
+  /* ── CONTACT PAGE ── */
+  #contact-page {
+    padding: 72px 4rem 6rem;
+  }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; padding: 5rem 0;
+  }
+  .contact-info { }
+  .contact-detail {
+    display: flex; align-items: start;
+    gap: 1rem; padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border2);
+  }
+  .contact-icon {
+    font-size: 1.2rem; color: var(--gold);
+    margin-top: 0.2rem; flex-shrink: 0;
+  }
+  .contact-detail-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--sepia3);
+    margin-bottom: 0.3rem;
+  }
+  .contact-detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; color: var(--ink);
+  }
+  .contact-form { }
+  .contact-form .form-row { margin-bottom: 1.8rem; }
+
+  /* ── TESTIMONIALS STRIP ── */
+  .testimonials-section {
+    padding: 5rem 4rem;
+    background: var(--parchment);
+    overflow: hidden;
+  }
+  .testimonials-track {
+    display: flex; gap: 2rem;
+    animation: scrollLeft 30s linear infinite;
+    width: max-content;
+  }
+  .testimonials-section:hover .testimonials-track { animation-play-state: paused; }
+  @keyframes scrollLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .testimonial-card {
+    width: 380px; flex-shrink: 0;
+    padding: 2.5rem; border: 1px solid var(--border);
+    background: var(--cream);
+  }
+  .testimonial-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-style: italic;
+    font-weight: 300; color: var(--sepia2);
+    line-height: 1.75; margin-bottom: 1.5rem;
+  }
+  .testimonial-author {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--sepia3);
+  }
+  .testimonial-role {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.65rem; color: var(--gold);
+    letter-spacing: 0.08em; margin-top: 0.2rem;
+  }
+  .testimonial-stars {
+    color: var(--gold); font-size: 0.8rem;
+    letter-spacing: 0.1em; margin-bottom: 0.8rem;
+  }
+
+  /* ── PROCESS SECTION ── */
+  .process-section {
+    padding: 6rem 4rem;
+  }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 0; margin-top: 4rem;
+    border-top: 1px solid var(--border);
+  }
+  .process-step {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .process-step:last-child { border-right: none; }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem; font-style: italic;
+    color: rgba(200,146,42,0.15); line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; color: var(--ink);
+    margin-bottom: 0.8rem;
+  }
+  .step-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 300;
+    color: var(--sepia2); line-height: 1.65;
+  }
+
+  /* ── SERVICE DETAIL PAGE ── */
+  #service-detail-page {
+    padding: 72px 4rem 6rem;
+  }
+  .service-detail-hero {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--border2);
+  }
+  .service-detail-body {
+    display: grid; grid-template-columns: 2fr 1fr;
+    gap: 5rem; padding: 4rem 0;
+  }
+  .service-detail-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; color: var(--ink); margin: 2rem 0 0.8rem;
+  }
+  .service-detail-content p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 300;
+    color: var(--sepia2); line-height: 1.8; margin-bottom: 1rem;
+  }
+  .service-detail-content ul {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; color: var(--sepia2);
+    list-style: none; margin-bottom: 1.5rem;
+  }
+  .service-detail-content ul li {
+    padding: 0.5rem 0; padding-left: 1.5rem;
+    position: relative; border-bottom: 1px solid var(--border2);
+  }
+  .service-detail-content ul li::before {
+    content: '✦'; color: var(--gold); font-size: 0.55rem;
+    position: absolute; left: 0; top: 0.65rem;
+  }
+  .service-sidebar-card {
+    padding: 2.5rem; border: 1px solid var(--border);
+    background: var(--parchment); position: sticky;
+    top: 5rem; height: fit-content;
+  }
+  .sidebar-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .sidebar-price-note {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.1em;
+    color: var(--sepia3); margin-bottom: 1.5rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink2);
+    padding: 5rem 4rem 2rem;
+    color: var(--cream);
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem; margin-bottom: 4rem;
+    padding-bottom: 4rem; border-bottom: 1px solid rgba(253,248,240,0.1);
+  }
+  .footer-brand {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem; color: var(--gold2);
+    margin-bottom: 1rem;
+  }
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-style: italic;
+    color: rgba(253,248,240,0.5); line-height: 1.65;
+  }
+  .footer-col-title {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(253,248,240,0.4); margin-bottom: 1.2rem;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 0.6rem; }
+  .footer-links a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; color: rgba(253,248,240,0.65);
+    text-decoration: none; cursor: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold2); }
+  .footer-bottom {
+    display: flex; justify-content: space-between;
+    align-items: center;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(253,248,240,0.3);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    overflow: hidden; padding: 1.2rem 0;
+    border-top: 1px solid var(--border2);
+    border-bottom: 1px solid var(--border2);
+  }
+  .marquee-track {
+    display: flex; width: max-content;
+    animation: marqueeLine 20s linear infinite;
+  }
+  @keyframes marqueeLine {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .marquee-item {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem; font-style: italic;
+    color: var(--sepia3); letter-spacing: 0.05em;
+    white-space: nowrap; padding: 0 2rem;
+  }
+  .marquee-dot { color: var(--gold); margin: 0 0.5rem; }
+
+  /* ── NOTIFICATION ── */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--ink); color: var(--cream);
+    padding: 1rem 1.8rem; z-index: 9000;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.1em;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.76,0,0.24,1);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 1.5rem 0 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--sepia3);
+  }
+  .breadcrumb a {
+    color: var(--sepia3); text-decoration: none;
+    cursor: none; transition: color 0.2s;
+  }
+  .breadcrumb a:hover { color: var(--gold); }
+  .breadcrumb span { color: var(--gold); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--sepia3); }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo" onclick="showPage('home')">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 4C17 2 12 3 10 8C7 3 2 4 2 9C2 14 7 18 12 22C17 18 22 14 22 9C22 7.5 21.3 5.5 20 4Z" stroke="#c8922a" stroke-width="1.2" fill="none"/>
+      <path d="M12 8C12 8 13 10 15 10C13 10 12 12 12 12C12 12 11 10 9 10C11 10 12 8 12 8Z" fill="#c8922a"/>
+    </svg>
+    Ritik Kumar
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" onclick="showPage('services')">Services</a></li>
+    <li><a href="#" onclick="showPage('portfolio')">Portfolio</a></li>
+    <li><a href="#" onclick="showPage('pricing')">Pricing</a></li>
+    <li><a href="#" onclick="showPage('about')">About</a></li>
+    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta" onclick="showPage('contact')">Hire Me</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════ HOME ═══ -->
+<div class="page active" id="home-page">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg-text">Words</div>
+
+    <!-- Quill SVG -->
+    <div class="hero-quill">
+      <svg width="200" height="500" viewBox="0 0 200 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 10 C130 40, 170 100, 140 180 C120 240, 60 280, 80 380 L100 490" stroke="#5c4a2a" stroke-width="2" fill="none"/>
+        <path d="M100 10 C70 40, 30 100, 60 180 C80 240, 140 280, 120 380" stroke="#5c4a2a" stroke-width="1.5" fill="none"/>
+        <path d="M100 10 C130 40, 165 95, 145 175" stroke="#9e8050" stroke-width="1" fill="none" stroke-dasharray="3,4"/>
+        <line x1="80" y1="380" x2="100" y2="490" stroke="#5c4a2a" stroke-width="2.5"/>
+        <ellipse cx="100" cy="492" rx="4" ry="8" fill="#5c4a2a"/>
+      </svg>
+    </div>
+
+    <p class="hero-eyebrow">✦ Words, Made to Sound Human ✦</p>
+    <h1 class="hero-title">
+      Words that<br>
+      <em>sound human,</em><br>
+      earn attention.
+    </h1>
+    <p class="hero-sub">
+      Content writing and AI-to-human editing for brands, creators, and products — scripts, blogs, UX copy, and social content, refined with a storyteller's ear and a designer's eye for what actually lands.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary" onclick="showPage('services')"><span>Explore Services</span></a>
+      <a href="#" class="btn-outline" onclick="showPage('portfolio')">View Portfolio</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">2+</div>
+        <div class="hero-stat-label">Years Freelancing</div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div>
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Creative Disciplines</div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div>
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Human-Edited Copy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-track" id="marquee1"></div>
+  </div>
+
+  <!-- SERVICES PREVIEW -->
+  <section style="padding: 6rem 4rem;">
+    <div class="reveal">
+      <p class="section-eyebrow">What I Do</p>
+      <h2 class="section-title">Content that <em>earns</em><br>its place</h2>
+    </div>
+    <div class="services-grid" style="margin-top: 3.5rem;">
+      <div class="service-card reveal" onclick="showServiceDetail('ai-human')">
+        <span class="service-card-icon">✍️</span>
+        <h3 class="service-card-title">AI-to-Human Transformation</h3>
+        <p class="service-card-desc">Raw AI output refined into authentic, natural-sounding content — restructured, re-voiced, and edited until it reads like a person wrote it.</p>
+        <div class="service-card-tags"><span class="tag">Humanization</span><span class="tag">Brand Voice</span></div>
+        <a class="service-card-link" href="#" onclick="showServiceDetail('ai-human')">Learn more</a>
+      </div>
+      <div class="service-card reveal" onclick="showServiceDetail('scripts')">
+        <span class="service-card-icon">🎬</span>
+        <h3 class="service-card-title">Video & Social Scripts</h3>
+        <p class="service-card-desc">Scripts for Reels, YouTube, and short-form video — written for the ear, paced for retention, edited alongside the footage.</p>
+        <div class="service-card-tags"><span class="tag">Scriptwriting</span><span class="tag">Short-form</span></div>
+        <a class="service-card-link" href="#" onclick="showServiceDetail('scripts')">Learn more</a>
+      </div>
+      <div class="service-card reveal" onclick="showServiceDetail('ux')">
+        <span class="service-card-icon">🧩</span>
+        <h3 class="service-card-title">UX & Product Microcopy</h3>
+        <p class="service-card-desc">Onboarding flows, buttons, empty states, and error messages — copy shaped by an actual UI/UX design background.</p>
+        <div class="service-card-tags"><span class="tag">UX Writing</span><span class="tag">Microcopy</span></div>
+        <a class="service-card-link" href="#" onclick="showServiceDetail('ux')">Learn more</a>
+      </div>
+      <div class="service-card reveal" onclick="showServiceDetail('blog')">
+        <span class="service-card-icon">📖</span>
+        <h3 class="service-card-title">Blog & Long-form Content</h3>
+        <p class="service-card-desc">Articles and guides written with real structure and a point of view — researched, readable, and built to hold attention.</p>
+        <div class="service-card-tags"><span class="tag">Blog</span><span class="tag">Editorial</span></div>
+        <a class="service-card-link" href="#" onclick="showServiceDetail('blog')">Learn more</a>
+      </div>
+      <div class="service-card reveal" onclick="showServiceDetail('social')">
+        <span class="service-card-icon">💬</span>
+        <h3 class="service-card-title">Social Media Copy & Captions</h3>
+        <p class="service-card-desc">Captions, carousels, and post copy for Instagram and LinkedIn that sound like a person talking, not a brand broadcasting.</p>
+        <div class="service-card-tags"><span class="tag">Social</span><span class="tag">Captions</span></div>
+        <a class="service-card-link" href="#" onclick="showServiceDetail('social')">Learn more</a>
+      </div>
+      <div class="service-card reveal" onclick="showServiceDetail('audio')">
+        <span class="service-card-icon">🎙️</span>
+        <h3 class="service-card-title">Podcast & Audio Content Writing</h3>
+        <p class="service-card-desc">Show notes, episode descriptions, and intro/outro scripts — informed by real hands-on audio editing experience.</p>
+        <div class="service-card-tags"><span class="tag">Podcast</span><span class="tag">Show Notes</span></div>
+        <a class="service-card-link" href="#" onclick="showServiceDetail('audio')">Learn more</a>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top: 3.5rem;">
+      <a href="#" class="btn-outline" onclick="showPage('services')">All Services →</a>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section reveal">
+    <div class="section-divider"><span>✦ The Process ✦</span></div>
+    <div style="margin-top: 2.5rem;">
+      <p class="section-eyebrow">How It Works</p>
+      <h2 class="section-title">Craft over <em>convenience</em></h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Discovery</h3>
+        <p class="step-body">Deep-dive into your brand, audience, goals, and competitive landscape. Every word has a purpose.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Strategy</h3>
+        <p class="step-body">Content architecture, tone framework, keyword mapping, and editorial calendar built before writing begins.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Creation</h3>
+        <p class="step-body">Handcrafted drafts with meticulous attention to voice, rhythm, and persuasion — reviewed with fresh eyes twice.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <h3 class="step-title">Refinement</h3>
+        <p class="step-body">Two rounds of revisions, SEO pass, readability audit, and final sign-off. Delivered clean and on-brand.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section">
+    <div style="padding: 0 0 2.5rem;">
+      <p class="section-eyebrow">How I Work</p>
+      <h2 class="section-title">Principles, <em>not just prose</em></h2>
+    </div>
+    <div class="testimonials-track" id="testimonials-track"></div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section style="padding: 6rem 4rem; background: var(--cream2); text-align:center;">
+    <p class="section-eyebrow" style="text-align:center;">Ready to Begin?</p>
+    <h2 class="section-title" style="margin: 0 auto 1.5rem; max-width: 600px; text-align:center;">
+      Let's write something <em>worth reading</em>
+    </h2>
+    <p class="section-body" style="margin: 0 auto 3rem; text-align:center;">
+      From a single caption to a full content package — I'd love to hear about your project.
+    </p>
+    <a href="#" class="btn-primary" onclick="showPage('contact')"><span>Start a Conversation</span></a>
+  </section>
+
+</div><!-- /home-page -->
+
+
+<!-- ═══════════════════════════════════════════ SERVICES ═══ -->
+<div class="page" id="services-page">
+  <div class="breadcrumb"><a href="#" onclick="showPage('home')">Home</a> <span>/</span> Services</div>
+  <div class="services-header">
+    <p class="section-eyebrow">Full Service Suite</p>
+    <h1 class="section-title">Every word, <em>intentional</em></h1>
+    <p class="section-body" style="margin-top:1rem;">Content writing, AI-humanization, and UX copy — drawing on a background that spans storytelling, design, and audio-video production.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card" onclick="showServiceDetail('ai-human')">
+      <span class="service-card-icon">✍️</span>
+      <h3 class="service-card-title">AI-to-Human Transformation</h3>
+      <p class="service-card-desc">AI can draft. I bring it to life. Raw model output is rewritten with personality, nuance, narrative flow, and an editor's rigour — turning generic text into content that reads as unmistakably human.</p>
+      <div class="service-card-tags"><span class="tag">Humanisation</span><span class="tag">Brand Voice</span><span class="tag">Editing</span></div>
+      <a class="service-card-link" href="#" onclick="showServiceDetail('ai-human')">Full details</a>
+    </div>
+    <div class="service-card" onclick="showServiceDetail('scripts')">
+      <span class="service-card-icon">🎬</span>
+      <h3 class="service-card-title">Video & Social Scripts</h3>
+      <p class="service-card-desc">Scripts for Reels, Shorts, and YouTube — written to be spoken, paced for retention, and shaped with an editor's sense of what actually gets cut in the timeline.</p>
+      <div class="service-card-tags"><span class="tag">Scriptwriting</span><span class="tag">Short-form</span><span class="tag">Storytelling</span></div>
+      <a class="service-card-link" href="#" onclick="showServiceDetail('scripts')">Full details</a>
+    </div>
+    <div class="service-card" onclick="showServiceDetail('ux')">
+      <span class="service-card-icon">🧩</span>
+      <h3 class="service-card-title">UX & Product Microcopy</h3>
+      <p class="service-card-desc">Wireframe-aware UX writing — onboarding flows, button labels, tooltips, empty states, and error messages — written by someone who's actually designed the screens they sit on.</p>
+      <div class="service-card-tags"><span class="tag">UX Writing</span><span class="tag">Microcopy</span><span class="tag">Product</span></div>
+      <a class="service-card-link" href="#" onclick="showServiceDetail('ux')">Full details</a>
+    </div>
+    <div class="service-card" onclick="showServiceDetail('blog')">
+      <span class="service-card-icon">📖</span>
+      <h3 class="service-card-title">Blog & Long-form Content</h3>
+      <p class="service-card-desc">Guides, articles, and evergreen resources written with real structure and a point of view — researched, readable, and built to hold a reader's attention to the end.</p>
+      <div class="service-card-tags"><span class="tag">Blog</span><span class="tag">Guides</span><span class="tag">Editorial</span></div>
+      <a class="service-card-link" href="#" onclick="showServiceDetail('blog')">Full details</a>
+    </div>
+    <div class="service-card" onclick="showServiceDetail('social')">
+      <span class="service-card-icon">💬</span>
+      <h3 class="service-card-title">Social Media Copy & Captions</h3>
+      <p class="service-card-desc">Instagram captions, carousels, and LinkedIn posts — every small word considered, written to sound like a person talking, not a brand broadcasting.</p>
+      <div class="service-card-tags"><span class="tag">Social</span><span class="tag">Captions</span><span class="tag">LinkedIn</span></div>
+      <a class="service-card-link" href="#" onclick="showServiceDetail('social')">Full details</a>
+    </div>
+    <div class="service-card" onclick="showServiceDetail('audio')">
+      <span class="service-card-icon">🎙️</span>
+      <h3 class="service-card-title">Podcast & Audio Content Writing</h3>
+      <p class="service-card-desc">Show notes, episode descriptions, and intro/outro scripts — informed by real, hands-on experience editing and syncing audio for podcasts and interviews.</p>
+      <div class="service-card-tags"><span class="tag">Podcast</span><span class="tag">Show Notes</span></div>
+      <a class="service-card-link" href="#" onclick="showServiceDetail('audio')">Full details</a>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top: 4rem;">
+    <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--sepia2); margin-bottom: 1.5rem;">Not sure which service fits? Let's talk it through.</p>
+    <a href="#" class="btn-primary" onclick="showPage('contact')"><span>Book a Free Discovery Call</span></a>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ SERVICE DETAIL ═══ -->
+<div class="page" id="service-detail-page">
+  <div class="breadcrumb">
+    <a href="#" onclick="showPage('home')">Home</a> <span>/</span>
+    <a href="#" onclick="showPage('services')">Services</a> <span>/</span>
+    <span id="detail-breadcrumb">Detail</span>
+  </div>
+  <div class="service-detail-hero">
+    <p class="section-eyebrow" id="detail-eyebrow">Service</p>
+    <h1 class="section-title" id="detail-title">Title</h1>
+    <p class="section-body" style="margin-top:1rem;" id="detail-subtitle">Subtitle</p>
+  </div>
+  <div class="service-detail-body">
+    <div class="service-detail-content" id="detail-content"></div>
+    <div>
+      <div class="service-sidebar-card">
+        <p class="section-eyebrow">Starting From</p>
+        <div class="sidebar-price" id="detail-price">$XXX</div>
+        <div class="sidebar-price-note" id="detail-price-note">per project</div>
+        <a href="#" class="btn-primary" style="display:block; text-align:center; margin-bottom:1rem;" onclick="showPage('contact')"><span>Request a Quote</span></a>
+        <a href="#" class="btn-outline" style="display:block; text-align:center;" onclick="showPage('pricing')">See All Pricing</a>
+        <div style="margin-top:2rem; border-top: 1px solid var(--border); padding-top:1.5rem;">
+          <p class="section-eyebrow">Turnaround</p>
+          <p id="detail-turnaround" style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--sepia2);">3–5 business days</p>
+        </div>
+        <div style="margin-top:1.5rem; border-top: 1px solid var(--border); padding-top:1.5rem;">
+          <p class="section-eyebrow">Revisions</p>
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--sepia2);">2 rounds included</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ PORTFOLIO ═══ -->
+<div class="page" id="portfolio-page">
+  <div class="breadcrumb"><a href="#" onclick="showPage('home')">Home</a> <span>/</span> Portfolio</div>
+  <div class="portfolio-header">
+    <p class="section-eyebrow">Selected Works</p>
+    <h1 class="section-title">Writing that <em>speaks</em> for itself</h1>
+    <p class="section-body" style="margin-top:1rem;">A running collection of writing, scripts, and copy across formats — sample work and real projects, added as they're finished.</p>
+  </div>
+
+  <button class="add-project-btn" onclick="openProjectModal()">
+    <span style="font-size:1.1rem;">+</span> Add New Project
+  </button>
+
+  <div class="portfolio-filters" id="portfolio-filters">
+    <button class="filter-btn active" onclick="filterPortfolio('all', this)">All Work</button>
+    <button class="filter-btn" onclick="filterPortfolio('ai-human', this)">AI-to-Human</button>
+    <button class="filter-btn" onclick="filterPortfolio('scripts', this)">Scripts</button>
+    <button class="filter-btn" onclick="filterPortfolio('ux', this)">UX Copy</button>
+    <button class="filter-btn" onclick="filterPortfolio('blog', this)">Editorial</button>
+    <button class="filter-btn" onclick="filterPortfolio('social', this)">Social</button>
+    <button class="filter-btn" onclick="filterPortfolio('audio', this)">Audio</button>
+  </div>
+  <div class="portfolio-grid" id="portfolio-grid"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ PRICING ═══ -->
+<div class="page" id="pricing-page">
+  <div class="breadcrumb"><a href="#" onclick="showPage('home')">Home</a> <span>/</span> Pricing</div>
+  <div class="pricing-header">
+    <p class="section-eyebrow">Transparent Pricing</p>
+    <h1 class="section-title">Invest in words that <em>earn back</em></h1>
+    <p class="section-body" style="margin-top:1rem;">Clear, honest pricing in ₹ and $. No surprise invoices. Custom packages available for ongoing partnerships.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <p class="pricing-label">Essentials</p>
+      <h2 class="pricing-plan">Starter</h2>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--sepia2); font-weight:300;">For a single piece of content, done well</p>
+      <div class="price-amount">₹1,500</div>
+      <p class="price-sub">≈ $18 · per piece / starting from</p>
+      <ul class="pricing-features">
+        <li>1 article, script, or AI-to-human rewrite</li>
+        <li>800–1,200 words (or equivalent runtime)</li>
+        <li>2 revision rounds</li>
+        <li>3–5 day turnaround</li>
+        <li>Tone & brief intake call</li>
+      </ul>
+      <a href="#" class="btn-outline" style="display:block; text-align:center;" onclick="showPage('contact')">Get Started</a>
+    </div>
+    <div class="pricing-card featured">
+      <p class="pricing-label" style="color:var(--gold2)!important;">Most Popular</p>
+      <h2 class="pricing-plan">Professional</h2>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:300;">For an ongoing content package across formats</p>
+      <div class="price-amount">₹5,000</div>
+      <p class="price-sub">≈ $60 · per project / starting from</p>
+      <ul class="pricing-features">
+        <li>3 deliverables across writing formats</li>
+        <li>Mix of blog, scripts, social, or UX copy</li>
+        <li>AI-humanization pass included</li>
+        <li>2 revision rounds per piece</li>
+        <li>3–4 day turnaround</li>
+        <li>Priority WhatsApp/email access</li>
+      </ul>
+      <a href="#" class="btn-primary" style="display:block; text-align:center;" onclick="showPage('contact')"><span>Get Started</span></a>
+    </div>
+    <div class="pricing-card">
+      <p class="pricing-label">Partnership</p>
+      <h2 class="pricing-plan">Bespoke</h2>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--sepia2); font-weight:300;">For brands and creators needing ongoing content</p>
+      <div class="price-amount">Custom</div>
+      <p class="price-sub">monthly retainer or project-based</p>
+      <ul class="pricing-features">
+        <li>Unlimited scope discussion</li>
+        <li>Full content calendar or script slate</li>
+        <li>Cross-format: video, social, blog, UX copy</li>
+        <li>Dedicated creative partnership</li>
+        <li>NDA available on request</li>
+        <li>Flexible turnaround for ongoing work</li>
+      </ul>
+      <a href="#" class="btn-outline" style="display:block; text-align:center;" onclick="showPage('contact')">Let's Talk</a>
+    </div>
+  </div>
+
+  <!-- ADD-ON SERVICES TABLE -->
+  <div style="margin-top: 5rem;">
+    <p class="section-eyebrow">À La Carte</p>
+    <h2 class="section-title">Individual <em>deliverables</em></h2>
+    <p class="section-body" style="margin-top:0.5rem;">All prices in INR, with an approximate USD equivalent.</p>
+    <div style="margin-top: 2.5rem; border: 1px solid var(--border);">
+      <table style="width:100%; border-collapse:collapse; font-family:'Cormorant Garamond',serif;">
+        <thead>
+          <tr style="background:var(--parchment);">
+            <th style="padding:1.2rem 1.5rem; text-align:left; font-family:'Lato',sans-serif; font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--sepia); border-bottom:1px solid var(--border); font-weight:400;">Service</th>
+            <th style="padding:1.2rem 1.5rem; text-align:left; font-family:'Lato',sans-serif; font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--sepia); border-bottom:1px solid var(--border); font-weight:400;">Scope</th>
+            <th style="padding:1.2rem 1.5rem; text-align:right; font-family:'Lato',sans-serif; font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--sepia); border-bottom:1px solid var(--border); font-weight:400;">Price (from, ₹ / $)</th>
+          </tr>
+        </thead>
+        <tbody id="pricing-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ ABOUT ═══ -->
+<div class="page" id="about-page">
+  <div class="breadcrumb"><a href="#" onclick="showPage('home')">Home</a> <span>/</span> About</div>
+  <div class="about-grid">
+    <div class="about-portrait">
+      <div class="portrait-frame">
+        <div class="portrait-ornament"></div>
+        <div class="portrait-initials">RK</div>
+      </div>
+      <p class="portrait-caption">— writing & building since 2022 —</p>
+    </div>
+    <div class="about-text">
+      <p class="section-eyebrow">The Wordsmith</p>
+      <h1 class="section-title">Words, seen<br><em>through a design lens</em></h1>
+      <div class="about-quote">
+        "I think about a sentence the way I think about a screen — what earns attention, what builds trust, and what makes someone want to keep going."
+      </div>
+      <div class="about-body">
+        <p style="margin-bottom:1.2rem;">I'm Ritik — a content writer and copywriter with a background that doesn't follow the usual path into writing. I started in audio editing, moved into UI/UX design, and along the way kept coming back to the same thing: words, and how to make them land.</p>
+        <p style="margin-bottom:1.2rem;">Since 2023 I've worked as an audio editor and content writer at Sukudio Analytica, where I translate, adapt, and write dubbing scripts for micro-drama platforms like Kuku TV and DashReels, and edit and write content for creator YouTube channels — including Hindi content for Nikhil Kamath's podcast, and localized content for family channels like Teen Times, WooHoo, and Slick Slime Sam. Alongside that, I freelance as a UI/UX designer, and earlier wrote scripts and edited videos as an independent content creator for social platforms. That mix — translation, sound, screens, and story — is exactly what I bring to AI-to-human content: I know what makes a sentence sound stiff, a script sound unnatural, or an interface sound unhelpful, and how to fix it.</p>
+        <p style="margin-bottom:1.2rem;">I lean heavily on AI tools in my process — for research, ideation, and first drafts — and then do the real work: rewriting until it sounds like an actual person, not a model. That's the part I care about most.</p>
+        <p>Outside of client work, I'm a BA graduate (School of Open Learning), and I write and speak in Hindi, English, and Bengali.</p>
+      </div>
+      <div class="skills-list" style="margin-top:2.5rem;">
+        <span class="skill-chip">AI-to-Human Editing</span>
+        <span class="skill-chip">Video Scripts</span>
+        <span class="skill-chip">UX Writing</span>
+        <span class="skill-chip">Podcast Content</span>
+        <span class="skill-chip">Social Copy</span>
+        <span class="skill-chip">Figma</span>
+        <span class="skill-chip">Adobe Photoshop</span>
+        <span class="skill-chip">Hindi · English · Bengali</span>
+      </div>
+
+      <p class="section-eyebrow" style="margin-top:2.8rem;">Platforms &amp; Channels</p>
+      <div class="client-wall">
+        <span class="client-mark">Sukudio Analytica</span>
+        <span class="client-mark">Kuku TV</span>
+        <span class="client-mark">DashReels</span>
+        <span class="client-mark">Nikhil Kamath's Podcast (Hindi)</span>
+        <span class="client-mark">Teen Times</span>
+        <span class="client-mark">WooHoo</span>
+        <span class="client-mark">Slick Slime Sam</span>
+      </div>
+      <p class="client-wall-note">Translation, dubbing scripts, and content editing delivered through my role at Sukudio Analytica.</p>
+
+      <div style="display:flex; gap:1.5rem; margin-top:2.5rem; flex-wrap:wrap;">
+        <a href="#" class="btn-primary" onclick="showPage('contact')"><span>Work Together</span></a>
+        <a href="#" class="btn-outline" onclick="showPage('portfolio')">See My Work</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ CONTACT ═══ -->
+<div class="page" id="contact-page">
+  <div class="breadcrumb"><a href="#" onclick="showPage('home')">Home</a> <span>/</span> Contact</div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p class="section-eyebrow" style="margin-top:3rem;">Get in Touch</p>
+      <h1 class="section-title">Let's write <em>something</em><br>remarkable</h1>
+      <p class="section-body" style="margin-top:1.5rem;">Whether it's a single page or a full content strategy, I'd love to hear about your project. I respond to all enquiries within 24 hours.</p>
+      <div style="margin-top:3rem;">
+        <div class="contact-detail">
+          <div class="contact-icon">✉</div>
+          <div>
+            <div class="contact-detail-label">Email</div>
+            <div class="contact-detail-value">Rishimehta695@gmail.com</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">☎</div>
+          <div>
+            <div class="contact-detail-label">Phone</div>
+            <div class="contact-detail-value">+91 93101 25429</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">🌍</div>
+          <div>
+            <div class="contact-detail-label">Location</div>
+            <div class="contact-detail-value">Delhi, India — IST (UTC+5:30), open to remote work globally</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">✦</div>
+          <div>
+            <div class="contact-detail-label">Availability</div>
+            <div class="contact-detail-value">Open to freelance projects & full-time opportunities</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form" style="padding-top:3rem;">
+      <div class="form-row">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-input" placeholder="Full name" id="contact-name">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="email@company.com" id="contact-email">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Service Interested In</label>
+        <select class="form-select" id="contact-service">
+          <option value="">Select a service...</option>
+          <option>AI-to-Human Transformation</option>
+          <option>Video & Social Scripts</option>
+          <option>UX & Product Microcopy</option>
+          <option>Blog & Long-form Content</option>
+          <option>Social Media Copy & Captions</option>
+          <option>Podcast & Audio Content Writing</option>
+          <option>Custom / Not sure yet</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Budget Range</label>
+        <select class="form-select" id="contact-budget">
+          <option value="">Select a range...</option>
+          <option>Under ₹2,000 ($25)</option>
+          <option>₹2,000–₹6,000 ($25–$75)</option>
+          <option>₹6,000–₹15,000 ($75–$180)</option>
+          <option>₹15,000+ ($180+)</option>
+          <option>Let's discuss</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Project Brief</label>
+        <textarea class="form-textarea" placeholder="Tell me about your project, goals, and timeline..." id="contact-message"></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%;" onclick="submitContact()">
+        <span>Send Enquiry →</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ADD PROJECT MODAL -->
+<div class="add-project-modal" id="project-modal">
+  <div class="modal-box">
+    <h2 class="modal-title">Add New Project</h2>
+    <div class="form-row">
+      <label class="form-label">Project Title *</label>
+      <input type="text" class="form-input" id="new-title" placeholder="e.g. SaaS Onboarding Email Sequence">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Category *</label>
+      <select class="form-select" id="new-category">
+        <option value="ai-human">AI-to-Human Transformation</option>
+        <option value="scripts">Video & Social Scripts</option>
+        <option value="ux">UX & Product Microcopy</option>
+        <option value="blog">Editorial / Blog</option>
+        <option value="social">Social Media Copy</option>
+        <option value="audio">Podcast & Audio Content</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Client / Industry</label>
+      <input type="text" class="form-input" id="new-client" placeholder="e.g. Fintech SaaS — confidential">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Brief Description *</label>
+      <textarea class="form-textarea" id="new-desc" placeholder="What was the project? What problem did it solve?"></textarea>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Key Result / Outcome</label>
+      <input type="text" class="form-input" id="new-result" placeholder="e.g. 42% open rate, #1 ranking for target keyword">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Year</label>
+      <input type="text" class="form-input" id="new-year" placeholder="2024">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="addProject()"><span>Add to Portfolio</span></button>
+      <button class="close-modal" onclick="closeProjectModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT DETAIL MODAL -->
+<div class="add-project-modal" id="project-detail-modal">
+  <div class="modal-box">
+    <div class="project-detail-category" id="pd-category"></div>
+    <h2 class="project-detail-title" id="pd-title"></h2>
+    <div class="project-detail-meta">
+      <span><b>Client / Platform</b><span id="pd-client"></span></span>
+      <span><b>Year</b><span id="pd-year"></span></span>
+    </div>
+    <div class="project-detail-body" id="pd-body"></div>
+    <div class="project-detail-result" id="pd-result-wrap">
+      <span>Result</span>
+      <p id="pd-result"></p>
+    </div>
+    <div class="project-detail-tags" id="pd-tags"></div>
+    <div class="modal-actions">
+      <button class="close-modal" onclick="closeProjectDetail()">Close</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Ritik Kumar</div>
+      <p class="footer-tagline">Content writing and AI-humanization for brands and creators who want words that actually sound human.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Services</p>
+      <ul class="footer-links">
+        <li><a href="#" onclick="showServiceDetail('ai-human')">AI-to-Human</a></li>
+        <li><a href="#" onclick="showServiceDetail('scripts')">Video Scripts</a></li>
+        <li><a href="#" onclick="showServiceDetail('ux')">UX Copy</a></li>
+        <li><a href="#" onclick="showServiceDetail('blog')">Blog Writing</a></li>
+        <li><a href="#" onclick="showServiceDetail('audio')">Podcast Content</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Navigate</p>
+      <ul class="footer-links">
+        <li><a href="#" onclick="showPage('home')">Home</a></li>
+        <li><a href="#" onclick="showPage('portfolio')">Portfolio</a></li>
+        <li><a href="#" onclick="showPage('pricing')">Pricing</a></li>
+        <li><a href="#" onclick="showPage('about')">About</a></li>
+        <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Connect</p>
+      <ul class="footer-links">
+        <li><a href="https://linkedin.com/in/ritik-kumar" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://instagram.com/rishimehta82611820" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="mailto:Rishimehta695@gmail.com">Rishimehta695@gmail.com</a></li>
+        <li><a href="tel:+919310125429">+91 93101 25429</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Ritik Kumar. All rights reserved.</span>
+    <span style="font-family:'Dancing Script',cursive; font-size:1rem; opacity:0.4;">crafted with intention</span>
+  </div>
+</footer>
+
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  ring.style.left = mx + 'px'; ring.style.top = my + 'px';
+});
+document.addEventListener('mousedown', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1.8)'; ring.style.transform = 'translate(-50%,-50%) scale(0.7)'; });
+document.addEventListener('mouseup', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.transform = 'translate(-50%,-50%) scale(1)'; });
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── PAGE ROUTER ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById(name + '-page');
+  if (page) { page.classList.add('active'); window.scrollTo({top:0, behavior:'smooth'}); }
+  initReveal();
+}
+
+// ── SERVICE DETAIL DATA ──
+const serviceData = {
+  'ai-human': {
+    eyebrow: 'AI-to-Human Transformation',
+    title: 'Making AI sound <em>undeniably</em> human',
+    subtitle: 'AI drafts fast. I make it land. Every piece of AI-generated content is deeply rewritten to carry genuine voice, natural rhythm, and a point of view.',
+    price: '₹1,200 / $15',
+    priceNote: 'per 1,000 words',
+    turnaround: '24–48 hours',
+    content: `<h2>What's included</h2>
+<p>AI text is fast, but it's also flat. It hedges, it loops, and it lacks the rhythm that makes readers trust and keep reading. My AI-to-Human service takes your drafts — however raw — and rebuilds them into content that reads as entirely, naturally human.</p>
+<p>This isn't light editing. It's a real rewrite: restructured sentences, replaced clichés, injected personality, and tone calibrated to match your brand or your own voice.</p>
+<h2>What you get</h2>
+<ul>
+<li>Full rewrite of AI-generated drafts, sentence by sentence</li>
+<li>Brand or personal voice alignment (short intake first)</li>
+<li>Readability and flow pass, cliché and filler removal</li>
+<li>Fact-check flagging where something reads uncertain</li>
+<li>Two revision rounds included</li>
+</ul>
+<h2>Ideal for</h2>
+<ul>
+<li>Founders and creators who draft with AI but need a human polish</li>
+<li>Small teams using AI at scale but needing quality control</li>
+<li>Students and professionals who want AI-assisted writing that doesn't read like it</li>
+<li>Anyone whose AI drafts keep getting flagged as robotic</li>
+</ul>`,
+    tags: ['Humanisation', 'Editing', 'Brand Voice']
+  },
+  'scripts': {
+    eyebrow: 'Video & Social Scripts',
+    title: 'Scripts written for the <em>ear</em>, not the page',
+    subtitle: 'Reels, Shorts, and YouTube scripts paced for retention and written the way people actually talk — shaped with an editor\'s sense of what survives the cut.',
+    price: '₹800 / $10',
+    priceNote: 'per short-form script',
+    turnaround: '2–3 business days',
+    content: `<h2>Why this is different</h2>
+<p>A script that reads well on paper doesn't always sound right out loud. Having actually edited audio and video for a living, I write with the cut in mind — where the hook goes, where attention drops, and where a line needs to be shorter than it looks.</p>
+<h2>What I write</h2>
+<ul>
+<li>Reels, Shorts, and TikTok scripts (hook, body, CTA)</li>
+<li>YouTube video scripts, long and short-form</li>
+<li>Voiceover scripts for explainer or product videos</li>
+<li>Video content calendars and series outlines</li>
+</ul>
+<h2>What's included</h2>
+<ul>
+<li>Hook variants to test at the top of the script</li>
+<li>Pacing notes for where to cut or hold a shot</li>
+<li>On-screen text suggestions where relevant</li>
+<li>Two revision rounds</li>
+</ul>`,
+    tags: ['Scriptwriting', 'Short-form', 'Storytelling']
+  },
+  'ux': {
+    eyebrow: 'UX & Product Microcopy',
+    title: 'Copy that understands the <em>screen</em> it lives on',
+    subtitle: 'Onboarding flows, buttons, tooltips, and error states — written by someone who has actually wireframed and designed the interfaces this copy lives in.',
+    price: '₹1,000 / $12',
+    priceNote: 'per screen / flow',
+    turnaround: '2–4 business days',
+    content: `<h2>Why a design background matters here</h2>
+<p>Most UX copy is written after the screens are already built, bolted on rather than designed in. With hands-on Figma and prototyping experience, I write microcopy alongside the flow itself — thinking about what a user needs to know at each step, not just what sounds nice in isolation.</p>
+<h2>What I write</h2>
+<ul>
+<li>Onboarding flow copy and empty states</li>
+<li>Button labels, tooltips, and confirmation copy</li>
+<li>Error messages that explain, not just apologise</li>
+<li>Notification and in-app messaging copy</li>
+</ul>
+<h2>What's included</h2>
+<ul>
+<li>Screen-by-screen copy audit or first draft</li>
+<li>Tone guidelines for consistency across the product</li>
+<li>Two revision rounds</li>
+</ul>`,
+    tags: ['UX Writing', 'Microcopy', 'Product']
+  },
+  'blog': {
+    eyebrow: 'Blog & Long-form Content',
+    title: 'Articles worth <em>reading twice</em>',
+    subtitle: 'Guides and articles written with real structure and a point of view — researched, readable, and built to hold a reader\'s attention to the end.',
+    price: '₹1,500 / $18',
+    priceNote: 'per article / starting from',
+    turnaround: '3–5 business days',
+    content: `<h2>Long-form done properly</h2>
+<p>Most long-form content is short-form content stretched with filler. I write articles where each section earns its place — building on the last one, not padding the word count.</p>
+<h2>Content formats</h2>
+<ul>
+<li>How-to guides (1,000–2,500 words)</li>
+<li>Opinion and personal-experience pieces</li>
+<li>Comparison and explainer articles</li>
+<li>Portfolio and personal-brand writing</li>
+</ul>
+<h2>What sets it apart</h2>
+<ul>
+<li>An actual angle — never a repackaging of existing content</li>
+<li>Clear structure with skimmable subheadings</li>
+<li>Written to be read by a person, not just indexed by a search engine</li>
+</ul>`,
+    tags: ['Blog', 'Guides', 'Editorial']
+  },
+  'social': {
+    eyebrow: 'Social Media Copy & Captions',
+    title: 'Small words, <em>real impact</em>',
+    subtitle: 'Instagram captions, carousels, and LinkedIn posts — written to sound like a person talking, not a brand broadcasting.',
+    price: '₹500 / $6',
+    priceNote: 'per post / starting from',
+    turnaround: '1–2 business days',
+    content: `<h2>Why microcopy shapes perception</h2>
+<p>The caption that makes someone stop scrolling. The LinkedIn post that gets genuine replies instead of a polite like. Social copy is where a voice becomes recognisable — and most of it is written on autopilot.</p>
+<h2>What I write</h2>
+<ul>
+<li>Instagram captions and carousel copy</li>
+<li>LinkedIn posts and personal-brand content</li>
+<li>Twitter/X threads</li>
+<li>Monthly content calendars (package pricing available)</li>
+</ul>`,
+    tags: ['Social', 'Captions', 'LinkedIn']
+  },
+  'audio': {
+    eyebrow: 'Podcast & Audio Content Writing',
+    title: 'Written by someone who\'s actually <em>in the mix</em>',
+    subtitle: 'Show notes, episode descriptions, and intro/outro scripts, informed by real hands-on experience editing and syncing audio for podcasts and interviews.',
+    price: '₹700 / $8',
+    priceNote: 'per episode',
+    turnaround: '2–3 business days',
+    content: `<h2>Why this comes from experience, not theory</h2>
+<p>As an audio editor working on podcasts and interviews since 2023, I know what an episode actually contains before I ever write about it — which makes for show notes and descriptions that are accurate, not generic.</p>
+<h2>What I write</h2>
+<ul>
+<li>Episode show notes and timestamps</li>
+<li>Episode descriptions for podcast platforms</li>
+<li>Intro and outro scripts</li>
+<li>Social clips copy to promote episodes</li>
+</ul>`,
+    tags: ['Podcast', 'Show Notes']
+  }
+};
+
+function showServiceDetail(id) {
+  const d = serviceData[id];
+  if (!d) return;
+  document.getElementById('detail-breadcrumb').textContent = d.eyebrow;
+  document.getElementById('detail-eyebrow').textContent = d.eyebrow;
+  document.getElementById('detail-title').innerHTML = d.title;
+  document.getElementById('detail-subtitle').textContent = d.subtitle;
+  document.getElementById('detail-price').textContent = d.price;
+  document.getElementById('detail-price-note').textContent = d.priceNote;
+  document.getElementById('detail-turnaround').textContent = d.turnaround;
+  document.getElementById('detail-content').innerHTML = d.content;
+  showPage('service-detail');
+}
+
+// ── PORTFOLIO DATA ──
+let projects = [
+  { title: 'Hindi Dubbing Scripts & Localization', category: 'audio', client: 'Sukudio Analytica — Kuku TV, DashReels', desc: 'Translated and adapted English micro-drama scripts into natural, speakable Hindi dialogue for dubbing.', fullDesc: 'Working as an audio editor and content writer at Sukudio Analytica, I translated and adapted dialogue for short-form drama series distributed on micro-drama platforms including Kuku TV and DashReels. The job was never just literal translation — lines had to be re-timed to match lip movement and scene pacing, and re-written so they sounded like something a person would actually say out loud in Hindi, not a direct translation of the English script. I worked closely with the audio editing pass, syncing the final dubbed dialogue to picture.', result: 'Multiple episodes translated, written, and synced across two dubbing platforms', tags: ['Translation', 'Dubbing Scripts', 'Hindi Localization'], year: '2023–Present' },
+  { title: 'Hindi Podcast Content — Creator Channel Work', category: 'audio', client: 'Sukudio Analytica — Nikhil Kamath\'s podcast (Hindi)', desc: 'Edited audio and worked on Hindi-language content for episodes of Nikhil Kamath\'s podcast, alongside other creator YouTube channels.', fullDesc: 'As part of my work at Sukudio Analytica, I contributed to Hindi-language audio and content editing for long-form podcast episodes, including work on Nikhil Kamath\'s podcast content, cleaning up and preparing audio for release and helping shape the written content that accompanies episodes.', result: 'Ongoing collaboration on episode audio and content', tags: ['Podcast Editing', 'Content Writing', 'Hindi'], year: '2023–Present' },
+  { title: 'Kids\' Content Localization — Teen Times, WooHoo, Slick Slime Sam', category: 'audio', client: 'Sukudio Analytica — Creator Channel Clients', desc: 'Translated and edited dubbed content for children\'s and family YouTube channels, including Teen Times, WooHoo, and Slick Slime Sam.', fullDesc: 'Alongside drama and podcast work, I\'ve handled translation, script adaptation, and audio editing for dubbed content on family-audience YouTube channels — Teen Times, WooHoo, and Slick Slime Sam among them. This work needed a different register than drama dubbing: simpler, punchier phrasing, tighter sync to fast-cut edits, and a tone that reads as playful rather than literal.', result: 'Recurring content editing across several channel partnerships', tags: ['Translation', 'Audio Editing', 'Kids Content'], year: '2023–Present' },
+  { title: 'Instagram & YouTube Script Series', category: 'scripts', client: 'Independent Content Creator', desc: 'Wrote scripts for short-form social videos, focused on hooks that hold attention in the first three seconds and pacing that survives the edit.', fullDesc: 'Before joining Sukudio Analytica, I worked independently as a content creator — writing scripts for short-form Instagram and YouTube content, then editing the footage myself. Writing and editing the same piece taught me to write for the cut: which lines earn their place, and which ones get trimmed the moment they slow the pace down.', result: 'Published across Instagram & YouTube', tags: ['Scriptwriting', 'Short-form Video'], year: '2022' },
+  { title: 'AI-to-Human Blog Rewrite — Sample Project', category: 'ai-human', client: 'Practice / Portfolio Piece', desc: 'Took a raw AI-generated draft on a general topic and rewrote it sentence by sentence for voice, rhythm, and natural phrasing.', fullDesc: 'A sample project built to demonstrate the AI-to-human process end to end: starting from an unedited AI draft, then rewriting for sentence rhythm, removing filler and hedging language, and adjusting structure so the piece reads with a clear point of view instead of a flat, averaged-out tone.', result: 'Before/after comparison available on request', tags: ['AI Humanization', 'Editing'], year: '2024' },
+  { title: 'Freelance App Onboarding Flow — UX Copy', category: 'ux', client: 'Freelance UI/UX Project', desc: 'Designed wireframes and wrote the accompanying onboarding copy for a mobile app concept, focused on clarity over cleverness.', fullDesc: 'A freelance UI/UX project where I designed the onboarding wireframes in Figma and wrote every piece of copy inside them — welcome screens, permission prompts, and empty states — with the copy and the layout built together rather than the text added afterward.', result: 'Full flow designed and written in Figma', tags: ['UX Writing', 'Figma'], year: '2023' },
+  { title: 'Personal Brand LinkedIn Series', category: 'social', client: 'Portfolio / Personal Project', desc: 'A short run of LinkedIn posts built around real experience moving between design, audio, and writing.', fullDesc: 'A short series of personal-brand LinkedIn posts, written to sound like an actual person reflecting on their work rather than a generic thought-leadership template — drawing on the real back-and-forth between design, audio editing, and writing.', result: '3-post series, sample on request', tags: ['Social Copy', 'Personal Brand'], year: '2025' },
+  { title: 'Long-form Article — Design & Storytelling', category: 'blog', client: 'Portfolio / Personal Project', desc: 'A 1,200-word piece on what UI/UX design and narrative writing actually have in common, written as a portfolio sample.', fullDesc: 'A portfolio-sample article exploring the overlap between interface design and storytelling — how both disciplines are really about anticipating what someone needs to feel or know at each step, just expressed through different tools.', result: 'Full article on request', tags: ['Long-form', 'Editorial'], year: '2025' },
+];
+
+function renderPortfolio(filter) {
+  const grid = document.getElementById('portfolio-grid');
+  const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+  const catLabels = { 'ai-human':'AI-to-Human', 'scripts':'Script', 'ux':'UX Copy', 'blog':'Editorial', 'social':'Social', 'audio':'Audio/Podcast' };
+  grid.innerHTML = filtered.map(p => {
+    const i = projects.indexOf(p);
+    return `
+    <div class="portfolio-item">
+      <button class="portfolio-item-link" onclick="openProjectDetail(${i})">
+        <div class="portfolio-category">${catLabels[p.category] || p.category}</div>
+        <h3 class="portfolio-title">${p.title}</h3>
+        <p class="portfolio-excerpt">${p.desc}</p>
+        ${p.result ? `<div style="background:var(--parchment); padding:0.8rem 1rem; margin-bottom:1.2rem; border-left:2px solid var(--gold);"><span style="font-family:'Lato',sans-serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold);">Result: </span><span style="font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--sepia);">${p.result}</span></div>` : ''}
+        <div class="portfolio-meta">
+          <span>${p.client || ''}</span>
+          <span>${p.year || ''}</span>
+        </div>
+        <div class="portfolio-open-hint">View project ＋</div>
+      </button>
+    </div>
+  `;
+  }).join('');
+}
+
+function filterPortfolio(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPortfolio(cat);
+}
+
+function openProjectDetail(i) {
+  const p = projects[i];
+  if (!p) return;
+  const catLabels = { 'ai-human':'AI-to-Human', 'scripts':'Script', 'ux':'UX Copy', 'blog':'Editorial', 'social':'Social', 'audio':'Audio/Podcast' };
+  document.getElementById('pd-category').textContent = catLabels[p.category] || p.category;
+  document.getElementById('pd-title').textContent = p.title;
+  document.getElementById('pd-client').textContent = p.client || '—';
+  document.getElementById('pd-year').textContent = p.year || '—';
+  document.getElementById('pd-body').textContent = p.fullDesc || p.desc;
+  const resultWrap = document.getElementById('pd-result-wrap');
+  if (p.result) { resultWrap.style.display = 'block'; document.getElementById('pd-result').textContent = p.result; }
+  else { resultWrap.style.display = 'none'; }
+  document.getElementById('pd-tags').innerHTML = (p.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+  document.getElementById('project-detail-modal').classList.add('open');
+}
+function closeProjectDetail() { document.getElementById('project-detail-modal').classList.remove('open'); }
+
+// Add project
+function openProjectModal() { document.getElementById('project-modal').classList.add('open'); }
+function closeProjectModal() { document.getElementById('project-modal').classList.remove('open'); }
+function addProject() {
+  const title = document.getElementById('new-title').value.trim();
+  const desc = document.getElementById('new-desc').value.trim();
+  if (!title || !desc) { showToast('Please fill in the required fields.'); return; }
+  projects.unshift({
+    title,
+    category: document.getElementById('new-category').value,
+    client: document.getElementById('new-client').value,
+    desc,
+    result: document.getElementById('new-result').value,
+    year: document.getElementById('new-year').value || new Date().getFullYear()
+  });
+  closeProjectModal();
+  renderPortfolio('all');
+  document.querySelectorAll('.filter-btn').forEach((b,i) => { if(i===0) b.classList.add('active'); else b.classList.remove('active'); });
+  showToast('Project added to portfolio!');
+  ['new-title','new-category','new-client','new-desc','new-result','new-year'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+  });
+}
+
+// ── PRICING TABLE ──
+const pricingRows = [
+  ['AI-to-Human Rewrite', 'Per 1,000 words, brand voice alignment', '₹1,200 / $15'],
+  ['Video/Reel Script', 'Short-form, hook + body + CTA', '₹800 / $10'],
+  ['YouTube Script (long-form)', 'Full video script, 5–10 min runtime', '₹1,800 / $22'],
+  ['UX Copy — Single Screen', 'Onboarding, empty state, or error flow', '₹1,000 / $12'],
+  ['Blog Article', '1,000–1,500 words, structured & edited', '₹1,500 / $18'],
+  ['Instagram Caption Pack (5)', 'Captions + hashtag suggestions', '₹1,200 / $15'],
+  ['LinkedIn Post (single)', 'Personal-brand or company post', '₹500 / $6'],
+  ['Podcast Show Notes', 'Per episode, with timestamps', '₹700 / $8'],
+  ['Social Content Calendar', '30-day package, all platforms', '₹4,500 / $55'],
+  ['Full Content Package', 'Mixed formats, ongoing monthly work', '₹5,000 / $60'],
+];
+function renderPricingTable() {
+  const tbody = document.getElementById('pricing-table-body');
+  tbody.innerHTML = pricingRows.map((r,i) => `
+    <tr style="background:${i%2===0?'var(--cream)':'var(--cream2)'};">
+      <td style="padding:1rem 1.5rem; font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--ink); border-bottom:1px solid var(--border2);">${r[0]}</td>
+      <td style="padding:1rem 1.5rem; font-family:'Cormorant Garamond',serif; font-size:0.95rem; color:var(--sepia2); font-weight:300; border-bottom:1px solid var(--border2);">${r[1]}</td>
+      <td style="padding:1rem 1.5rem; text-align:right; font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--sepia); border-bottom:1px solid var(--border2);">${r[2]}</td>
+    </tr>
+  `).join('');
+}
+
+// ── MARQUEE ──
+const marqueeItems = ['SEO Content','AI-to-Human','Email Funnels','B2B Case Studies','Market Reports','Thought Leadership','Whitepapers','Sales Enablement','Editorial Writing','Newsletter Copy'];
+function buildMarquee() {
+  const doubled = [...marqueeItems, ...marqueeItems];
+  document.getElementById('marquee1').innerHTML = doubled.map(m => `<span class="marquee-item">${m} <span class="marquee-dot">✦</span></span>`).join('');
+}
+
+// ── PRINCIPLES ──
+const testimonials = [
+  { text: "AI drafts fast, but fast isn't the same as good. Every AI-assisted piece gets a full human rewrite before it goes out.", author: "On AI-to-Human Work", role: "" },
+  { text: "A script that reads well on paper doesn't always sound right out loud. I write for the ear first, the page second.", author: "On Scriptwriting", role: "" },
+  { text: "Good UX copy comes from understanding the screen, not just the sentence. Design background helps here more than people expect.", author: "On UX Writing", role: "" },
+  { text: "I use AI tools constantly for research and first drafts — and then do the part that actually matters: making it sound like a person.", author: "On Process", role: "" },
+  { text: "Every project starts with a real brief conversation. No template voice, no guessing at tone.", author: "On Getting Started", role: "" },
+  { text: "Small projects get the same attention as big ones. A caption deserves as much care as a script.", author: "On Scope", role: "" },
+];
+function buildTestimonials() {
+  const doubled = [...testimonials, ...testimonials];
+  document.getElementById('testimonials-track').innerHTML = doubled.map(t => `
+    <div class="testimonial-card">
+      <p class="testimonial-text">"${t.text}"</p>
+      <div class="testimonial-author">${t.author}</div>
+      <div class="testimonial-role">${t.role}</div>
+    </div>
+  `).join('');
+}
+
+// ── CONTACT FORM ──
+function submitContact() {
+  const name = document.getElementById('contact-name').value.trim();
+  const email = document.getElementById('contact-email').value.trim();
+  const msg = document.getElementById('contact-message').value.trim();
+  if (!name || !email || !msg) { showToast('Please fill in all required fields.'); return; }
+  showToast('Message sent! I\'ll be in touch within 24 hours. ✦');
+  ['contact-name','contact-email','contact-message'].forEach(id => document.getElementById(id).value = '');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── REVEAL ON SCROLL ──
+function initReveal() {
+  const els = document.querySelectorAll('.page.active .reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => { el.classList.remove('visible'); obs.observe(el); });
+}
+
+// ── INIT ──
+buildMarquee();
+buildTestimonials();
+renderPortfolio('all');
+renderPricingTable();
+initReveal();
+
+// Staggered service card reveals
+setTimeout(() => {
+  document.querySelectorAll('.service-card.reveal, .portfolio-item.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.07) + 's';
+  });
+}, 100);
+</script>
+</body>
+</html>
